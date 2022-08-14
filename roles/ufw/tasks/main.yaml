@@ -1,0 +1,15 @@
+- name: Install ufw package
+  become: true
+  ansible.builtin.package:
+    name: ufw
+    state: present
+
+- name: Set logging
+  become: true
+  community.general.ufw:
+    logging: "on"
+
+- name: Enable firewall
+  become: true
+  community.general.ufw:
+    state: enabled

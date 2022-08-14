@@ -1,0 +1,25 @@
+
+- name: Install OpenSSH server
+  become: true
+  ansible.builtin.package:
+    name: openssh-server
+    state: present
+
+- name: Start SSH server and enable automatic start
+  become: true
+  ansible.builtin.service:
+    name: ssh
+    enabled: true
+    state: started
+
+- name: Configure firewall
+  block:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+
+    - name: Install OpenSSH server rule
+      when: "'ufw' in ansible_facts.packages"
+      become: true
+      community.general.ufw:
+        name: OpenSSH
+        rule: allow
